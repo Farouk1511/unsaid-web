@@ -53,12 +53,6 @@ export function Navbar() {
 
         {/* Auth Actions */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="hidden sm:block text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Login
-          </Link>
           <Button
             type="button"
             onClick={scrollToPreview}

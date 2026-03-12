@@ -8,6 +8,12 @@ type QuestionId = "context" | "feeling" | "goal"
 
 type Answers = Partial<Record<QuestionId, string>>
 
+export type PreviewAnswers = {
+  context: string
+  feeling: string
+  goal: string
+}
+
 const questions: Array<{
   id: QuestionId
   prompt: string
@@ -105,6 +111,14 @@ export function PreviewFlow() {
     setStep(0)
   }
 
+  const completedAnswers: PreviewAnswers | null = isComplete
+    ? {
+        context: answers.context ?? "",
+        feeling: answers.feeling ?? "",
+        goal: answers.goal ?? "",
+      }
+    : null
+
   return (
     <section id="preview" className="px-6 py-24 bg-background-alt/50">
       <div className="mx-auto max-w-5xl">
@@ -192,7 +206,7 @@ export function PreviewFlow() {
                 </Button>
               </div>
 
-              <WaitlistForm className="mt-8" />
+              <WaitlistForm className="mt-8" previewAnswers={completedAnswers} />
             </div>
           )}
         </div>

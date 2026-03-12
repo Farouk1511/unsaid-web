@@ -6,11 +6,18 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 
-interface WaitlistFormProps {
-  className?: string
+type PreviewAnswers = {
+  context: string
+  feeling: string
+  goal: string
 }
 
-export function WaitlistForm({ className }: WaitlistFormProps) {
+interface WaitlistFormProps {
+  className?: string
+  previewAnswers?: PreviewAnswers | null
+}
+
+export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [isPending, setIsPending] = useState(false)
@@ -26,7 +33,7 @@ export function WaitlistForm({ className }: WaitlistFormProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, previewAnswers }),
       })
 
       const data = (await response.json()) as { error?: string }
