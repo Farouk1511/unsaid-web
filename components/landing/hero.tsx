@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { WaveDivider } from "./wave-divider"
@@ -55,33 +54,15 @@ export function Hero() {
           </div>
 
           {/* Phone Preview */}
-          <div className="relative animate-fade-up animation-delay-300">
-            <div className="relative mx-auto h-[460px] sm:h-[500px] lg:h-[540px] w-full max-w-[440px]">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-12 left-1/2 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-primary/10 blur-[180px]"
-              />
-
-              <div className="absolute inset-0 flex items-end justify-center">
-                <div className="relative z-20 w-[58vw] max-w-[340px] sm:w-[52vw] sm:max-w-[360px] lg:w-[48vw] lg:max-w-[390px]">
-                  <div className="overflow-hidden rounded-[2.6rem]">
-                    {/* <Image
-                      src="/home-portrait.png"
-                      alt="Unsaid home screen with quick actions for uploading a screenshot, audio, or text"
-                      width={857}
-                      height={1835}
-                      className="block h-auto w-full scale-[1.08] drop-shadow-[0_22px_70px_rgba(123,97,255,0.30)]"
-                      priority
-                    /> */}
-
-                    <PhoneMockup imageAlt="Unsaid home screen with quick actions for uploading a screenshot, audio, or text" imageSrc="/home-portrait.png" />
-                  </div>
-                </div>
-              </div>
-
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-10 -left-10 w-24 h-24 bg-primary/12 rounded-full blur-2xl"
+          <div className="relative flex justify-center lg:justify-end animate-fade-up animation-delay-300">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]"
+            />
+            <div className="relative z-10">
+              <PhoneMockup
+                imageAlt="Unsaid home screen with quick actions for uploading a screenshot, audio, or text"
+                imageSrc="/home-portrait.png"
               />
             </div>
           </div>
