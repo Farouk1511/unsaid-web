@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Infinity } from "lucide-react"
 
 const navLinks = [
+  { label: "Preview", href: "#preview" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "What You Get", href: "#analysis" },
   { label: "Privacy", href: "#privacy" },

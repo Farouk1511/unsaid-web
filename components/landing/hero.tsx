@@ -1,6 +1,8 @@
 import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { WaveDivider } from "./wave-divider"
-import { WaitlistForm } from "./waitlist-form"
+import { PhoneMockup } from "./phone-mockup"
 
 export function Hero() {
   return (
@@ -25,7 +27,19 @@ export function Hero() {
               Upload a screenshot, paste the chat, or add a quick voice note.
             </p>
 
-            <WaitlistForm className="mt-10 max-w-md mx-auto lg:mx-0" />
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+              <Button asChild size="lg" className="h-11 rounded-full px-6">
+                <Link href="#preview">Try the 30-sec preview</Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-11 rounded-full px-6 border-primary/60 text-primary"
+              >
+                <Link href="#how-it-works">See how it works</Link>
+              </Button>
+            </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
               <div className="rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm text-foreground">
@@ -40,7 +54,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Phone Mockups */}
+          {/* Phone Preview */}
           <div className="relative animate-fade-up animation-delay-300">
             <div className="relative mx-auto h-[460px] sm:h-[500px] lg:h-[540px] w-full max-w-[440px]">
               <div
@@ -49,29 +63,18 @@ export function Hero() {
               />
 
               <div className="absolute inset-0 flex items-end justify-center">
-                <div className="relative z-10 w-[min(40vw,250px)] origin-bottom translate-x-[32%] sm:translate-x-[36%] lg:translate-x-[40%] rotate-[-18deg] opacity-90">
-                  <div className="overflow-hidden rounded-[2.4rem]">
-                    <Image
-                      src="/analysis-1-portrait.png"
-                      alt="Emotional analysis showing detected patterns and emotions"
-                      width={857}
-                      height={1835}
-                      className="block h-auto w-full scale-[1.08] drop-shadow-[0_18px_55px_rgba(0,0,0,0.55)]"
-                      priority
-                    />
-                  </div>
-                </div>
-
-                <div className="relative z-20 -ml-[2%] w-[min(40vw,250px)] origin-bottom -translate-x-[32%] sm:-translate-x-[36%] lg:-translate-x-[40%] rotate-[18deg]">
+                <div className="relative z-20 w-[58vw] max-w-[340px] sm:w-[52vw] sm:max-w-[360px] lg:w-[48vw] lg:max-w-[390px]">
                   <div className="overflow-hidden rounded-[2.6rem]">
-                    <Image
+                    {/* <Image
                       src="/home-portrait.png"
-                      alt="Unsaid chat interface showing a conversation about stress"
+                      alt="Unsaid home screen with quick actions for uploading a screenshot, audio, or text"
                       width={857}
                       height={1835}
                       className="block h-auto w-full scale-[1.08] drop-shadow-[0_22px_70px_rgba(123,97,255,0.30)]"
                       priority
-                    />
+                    /> */}
+
+                    <PhoneMockup imageAlt="Unsaid home screen with quick actions for uploading a screenshot, audio, or text" imageSrc="/home-portrait.png" />
                   </div>
                 </div>
               </div>

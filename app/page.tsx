@@ -2,6 +2,7 @@ import { Navbar } from "@/components/landing/navbar"
 import { Hero } from "@/components/landing/hero"
 import { FeaturePatterns } from "@/components/landing/feature-patterns"
 import { FeatureSupport } from "@/components/landing/feature-support"
+import { PreviewFlow } from "@/components/landing/preview-flow"
 import { PrivacySection } from "@/components/landing/privacy-section"
 import { Footer } from "@/components/landing/footer"
 
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <FeaturePatterns />
       <FeatureSupport />
+      <PreviewFlow />
       <PrivacySection />
       <Footer />
     </main>

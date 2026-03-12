@@ -5,20 +5,21 @@ import { Button } from "@/components/ui/button"
 import { Infinity } from "lucide-react"
 
 const navLinks = [
+  { label: "Preview", href: "#preview" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "What You Get", href: "#analysis" },
   { label: "Privacy", href: "#privacy" },
 ]
 
 export function Navbar() {
-  function scrollToWaitlist() {
-    const waitlist = document.getElementById("waitlist")
+  function scrollToPreview() {
+    const preview = document.getElementById("preview")
 
-    if (!waitlist) {
+    if (!preview) {
       return
     }
 
-    const top = waitlist.getBoundingClientRect().top + window.scrollY - 96
+    const top = preview.getBoundingClientRect().top + window.scrollY - 96
 
     window.scrollTo({
       top,
@@ -60,12 +61,12 @@ export function Navbar() {
           </Link>
           <Button
             type="button"
-            onClick={scrollToWaitlist}
+            onClick={scrollToPreview}
             size="sm"
             variant="outline"
             className="rounded-full px-5 h-9 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
           >
-            Join Waitlist
+            Try Preview
           </Button>
         </div>
       </nav>

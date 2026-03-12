@@ -63,9 +63,9 @@ export function WaitlistForm({ className }: WaitlistFormProps) {
       )}
     >
       <div className="space-y-1">
-        <p className="text-base font-medium text-foreground">Join the waitlist</p>
+        <p className="text-base font-medium text-foreground">Want first access when we open?</p>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Lock in 50% off your first month and 25% off your second month.
+          Join early for a priority invite and lock in 50% off month one plus 25% off month two.
         </p>
       </div>
 
@@ -97,10 +97,10 @@ export function WaitlistForm({ className }: WaitlistFormProps) {
           disabled={isPending}
           className="h-11 rounded-full px-6"
         >
-          {isPending ? "Joining..." : "Join the Waitlist"}
+          {isPending ? "Joining..." : "Join waitlist"}
         </Button>
         <p className="text-xs leading-relaxed text-muted-foreground">
-          We only need your name and email to reserve your spot.
+          No spam. 1-2 emails per month. Unsubscribe anytime.
         </p>
       </div>
     </form>
