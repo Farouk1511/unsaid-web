@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Unsaid Design System - Soft, feminine, emotionally safe */
+:root {
+  --background: #FCFAF6;
+  --background-alt: #F6F1FF;
+  --foreground: #1F2430;
+  --card: #FFFFFF;
+  --card-foreground: #1F2430;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F2430;
+  --primary: #7B61FF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #B7A8FF;
+  --secondary-foreground: #1F2430;
+  --muted: #F6F1FF;
+  --muted-foreground: #6E6A78;
+  --accent: #EEE8FF;
+  --accent-foreground: #1F2430;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: #FFFFFF;
+  --border: #E9E2F5;
+  --input: #E9E2F5;
+  --ring: #7B61FF;
+  --soft-pink: #F7DCE8;
+  --soft-lavender: #EEE8FF;
+  --soft-yellow: #FFF3D6;
+  --chart-1: #7B61FF;
+  --chart-2: #B7A8FF;
+  --chart-3: #F7DCE8;
+  --chart-4: #EEE8FF;
+  --chart-5: #E9E2F5;
+  --radius: 1rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1F2430;
+  --sidebar-primary: #7B61FF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EEE8FF;
+  --sidebar-accent-foreground: #1F2430;
+  --sidebar-border: #E9E2F5;
+  --sidebar-ring: #7B61FF;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-foreground: var(--foreground);
+  --color-soft-pink: var(--soft-pink);
+  --color-soft-lavender: var(--soft-lavender);
+  --color-soft-yellow: var(--soft-yellow);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
