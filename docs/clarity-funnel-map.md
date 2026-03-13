@@ -232,6 +232,25 @@ These experiments are now live and assigned per visitor with a persistent local 
    - `join_waitlist`
    - `get_early_access`
 
+All live experiment controls are defined in `lib/experiments.ts`.
+
+- `enabled: true | false`
+  - Set to `false` to pause the test and send everyone to the control variant.
+- `trafficPercent: 0-100`
+  - Set below `100` to ramp exposure gradually.
+  - Example: `10` means only about 10% of visitors enter that experiment.
+- Control variant
+  - The first item in `variants` is treated as the control/fallback version.
+  - If a test is paused, the control variant is what all visitors see.
+
+Example rollout plan:
+
+1. Start at `trafficPercent: 10`
+2. Review Clarity for obvious UX issues
+3. Increase to `25`
+4. Increase to `50`
+5. Increase to `100` once the variant looks safe
+
 ## Quick reads to run weekly
 
 1. TikTok sessions with `landing_view` but no `preview_started`
