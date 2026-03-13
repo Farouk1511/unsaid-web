@@ -7,14 +7,15 @@ Use this document to analyze how visitors move from TikTok to waitlist signup.
 Recommended funnel order:
 
 1. `landing_view`
-2. `hero_cta_clicked` or `nav_try_preview_clicked`
-3. `preview_viewed`
-4. `preview_started`
-5. `preview_step_completed`
-6. `preview_completed`
-7. `waitlist_form_viewed`
-8. `waitlist_submit_started`
-9. `waitlist_submit_success`
+2. `experiment_viewed`
+3. `hero_cta_clicked` or `nav_try_preview_clicked`
+4. `preview_viewed` or `waitlist_form_viewed`
+5. `preview_started`
+6. `preview_step_completed`
+7. `preview_completed`
+8. `waitlist_form_viewed`
+9. `waitlist_submit_started`
+10. `waitlist_submit_success`
 
 If a user drops between any two steps, open session recordings filtered by the earlier event.
 
@@ -39,9 +40,14 @@ If a user drops between any two steps, open session recordings filtered by the e
 
 ### CTA interactions
 
+`experiment_viewed`
+- Fires once per session when a visitor is assigned to a live experiment variant.
+- Properties: `experiment_id`, `experiment_variant`
+- Use it to measure exposure before clicks or conversions.
+
 `hero_cta_clicked`
 - Fires on both hero buttons.
-- Properties: `cta`, `cta_text`, `cta_surface`, `destination`, `experiment_id`, `experiment_variant`
+- Properties: `cta`, `cta_text`, `cta_surface`, `destination`, `copy_experiment_id`, `copy_experiment_variant`, `destination_experiment_id`, `destination_experiment_variant`
 - Main filter for hero CTA performance tests.
 
 `nav_try_preview_clicked`
@@ -102,19 +108,19 @@ If a user drops between any two steps, open session recordings filtered by the e
 
 `waitlist_form_viewed`
 - Fires when the form is visible on screen.
-- Property: `has_preview_answers`
+- Properties: `has_preview_answers`, `form_id`, `form_surface`
 
 `waitlist_submit_started`
 - Fires on form submit.
-- Properties: `has_preview_answers`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`
+- Properties: `has_preview_answers`, `form_id`, `form_surface`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`
 
 `waitlist_submit_success`
 - Fires on successful form completion.
-- Properties: `has_preview_answers`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`
+- Properties: `has_preview_answers`, `form_id`, `form_surface`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`
 
 `waitlist_submit_failed`
 - Fires on failed submission.
-- Properties: `has_preview_answers`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`, `error_type`
+- Properties: `has_preview_answers`, `form_id`, `form_surface`, `cta_text`, `cta_surface`, `experiment_id`, `experiment_variant`, `error_type`
 - `error_type` values: `duplicate`, `validation`, `network`, `unknown`
 
 ## Suggested Clarity filters
@@ -134,11 +140,26 @@ Then compare:
 
 Filter by:
 - Event `hero_cta_clicked`
-- `Custom tag` `experiment_id=hero_primary_cta_copy_v1`
+- `Custom tag` `copy_experiment_id=hero_primary_cta_copy_v1`
 
 Break down by:
-- `experiment_variant`
+- `copy_experiment_variant`
 - `cta_text`
+
+### Hero CTA destination test
+
+Filter by:
+- Event `hero_cta_clicked`
+- `Custom tag` `destination_experiment_id=hero_primary_cta_destination_v1`
+
+Break down by:
+- `destination_experiment_variant`
+- `destination`
+
+Compare:
+- sessions with `preview_started`
+- sessions with `waitlist_submit_started`
+- sessions with `waitlist_submit_success`
 
 ### Sticky nav CTA performance
 
@@ -171,6 +192,7 @@ Filter by:
 Break down by:
 - `error_type`
 - `has_preview_answers`
+- `form_surface`
 
 Then open recordings to see whether the issue is:
 - validation confusion
@@ -189,9 +211,26 @@ When adding a new experiment, keep these fields on the CTA event:
 Recommended first tests:
 
 1. Hero primary CTA copy
-2. Navbar CTA copy
-3. Waitlist button copy
-4. Waitlist form placement after preview vs repeated elsewhere on page
+2. Hero primary CTA destination
+3. Navbar CTA copy
+4. Waitlist button copy
+
+## Live experiments
+
+These experiments are now live and assigned per visitor with a persistent local variant:
+
+1. `hero_primary_cta_copy_v1`
+   - `try_the_30_sec_preview`
+   - `see_your_next_move`
+2. `hero_primary_cta_destination_v1`
+   - `preview`
+   - `waitlist_direct`
+3. `navbar_preview_cta_copy_v1`
+   - `try_preview`
+   - `see_preview`
+4. `waitlist_submit_cta_v1`
+   - `join_waitlist`
+   - `get_early_access`
 
 ## Quick reads to run weekly
 

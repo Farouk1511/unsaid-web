@@ -267,7 +267,7 @@ export function PreviewFlow() {
                 </Button>
               </div>
 
-              <WaitlistForm className="mt-8" previewAnswers={completedAnswers} />
+              <WaitlistForm className="mt-8" formId="waitlist-preview-form" previewAnswers={completedAnswers} />
             </div>
           )}
         </div>

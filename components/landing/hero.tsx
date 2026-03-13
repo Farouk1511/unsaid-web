@@ -2,21 +2,21 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
+import { trackClarityEvent } from "@/lib/clarity"
+import { heroPrimaryCopyExperiment, heroPrimaryDestinationExperiment, useExperiment } from "@/lib/experiments"
 import { WaveDivider } from "./wave-divider"
 import { PhoneMockup } from "./phone-mockup"
 
-const heroPrimaryCtaExperiment = {
-  experiment_id: "hero_primary_cta_copy_v1",
-  experiment_variant: "try_the_30_sec_preview",
-} as const
-
-const heroSecondaryCtaExperiment = {
-  experiment_id: "hero_secondary_cta_copy_v1",
-  experiment_variant: "see_how_it_works",
-} as const
-
 export function Hero() {
+  const { experimentId: copyExperimentId, variant: copyVariant } = useExperiment(heroPrimaryCopyExperiment)
+  const { experimentId: destinationExperimentId, variant: destinationVariant } = useExperiment(
+    heroPrimaryDestinationExperiment,
+  )
+
+  const primaryCtaText = copyVariant === "see_your_next_move" ? "See your next move" : "Try the 30-sec preview"
+  const primaryCtaHref = destinationVariant === "waitlist_direct" ? "#waitlist-direct" : "#preview"
+  const primaryCtaDestination = destinationVariant === "waitlist_direct" ? "waitlist_direct" : "preview"
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-28 overflow-hidden">
       <div className="max-w-5xl mx-auto w-full relative z-10">
@@ -42,20 +42,21 @@ export function Hero() {
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
               <Button asChild size="lg" className="h-11 rounded-full px-6">
                 <Link
-                  href="#preview"
+                  href={primaryCtaHref}
                   onClick={() =>
-                    trackClarityEvent(
-                      "hero_cta_clicked",
-                      getClarityExperimentProperties(heroPrimaryCtaExperiment, {
-                        cta: "try_preview",
-                        cta_text: "Try the 30-sec preview",
-                        cta_surface: "hero",
-                        destination: "preview",
-                      }),
-                    )
+                    trackClarityEvent("hero_cta_clicked", {
+                      cta: "primary",
+                      cta_text: primaryCtaText,
+                      cta_surface: "hero",
+                      destination: primaryCtaDestination,
+                      copy_experiment_id: copyExperimentId,
+                      copy_experiment_variant: copyVariant,
+                      destination_experiment_id: destinationExperimentId,
+                      destination_experiment_variant: destinationVariant,
+                    })
                   }
                 >
-                  Try the 30-sec preview
+                  {primaryCtaText}
                 </Link>
               </Button>
               <Button
@@ -67,15 +68,12 @@ export function Hero() {
                 <Link
                   href="#how-it-works"
                   onClick={() =>
-                    trackClarityEvent(
-                      "hero_cta_clicked",
-                      getClarityExperimentProperties(heroSecondaryCtaExperiment, {
-                        cta: "see_how_it_works",
-                        cta_text: "See how it works",
-                        cta_surface: "hero",
-                        destination: "how_it_works",
-                      }),
-                    )
+                    trackClarityEvent("hero_cta_clicked", {
+                      cta: "secondary",
+                      cta_text: "See how it works",
+                      cta_surface: "hero",
+                      destination: "how_it_works",
+                    })
                   }
                 >
                   See how it works

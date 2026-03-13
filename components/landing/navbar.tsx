@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
+import { trackClarityEvent } from "@/lib/clarity"
+import { navbarPreviewCtaExperiment, useExperiment } from "@/lib/experiments"
 import { Infinity } from "lucide-react"
 
 const navLinks = [
@@ -12,21 +13,18 @@ const navLinks = [
   { label: "Privacy", href: "#privacy" },
 ]
 
-const navbarPreviewCtaExperiment = {
-  experiment_id: "navbar_preview_cta_copy_v1",
-  experiment_variant: "try_preview",
-} as const
-
 export function Navbar() {
+  const { experimentId, variant } = useExperiment(navbarPreviewCtaExperiment)
+  const previewCtaText = variant === "see_preview" ? "See Preview" : "Try Preview"
+
   function scrollToPreview() {
-    trackClarityEvent(
-      "nav_try_preview_clicked",
-      getClarityExperimentProperties(navbarPreviewCtaExperiment, {
-        cta_text: "Try Preview",
-        cta_surface: "navbar",
-        location: "navbar",
-      }),
-    )
+    trackClarityEvent("nav_try_preview_clicked", {
+      cta_text: previewCtaText,
+      cta_surface: "navbar",
+      location: "navbar",
+      experiment_id: experimentId,
+      experiment_variant: variant,
+    })
 
     const preview = document.getElementById("preview")
 
@@ -87,7 +85,7 @@ export function Navbar() {
             variant="outline"
             className="rounded-full px-5 h-9 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
           >
-            Try Preview
+            {previewCtaText}
           </Button>
         </div>
       </nav>

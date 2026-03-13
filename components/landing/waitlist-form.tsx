@@ -4,13 +4,9 @@ import { type FormEvent, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
-import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
+import { trackClarityEvent } from "@/lib/clarity"
+import { useExperiment, waitlistSubmitExperiment } from "@/lib/experiments"
 import { cn } from "@/lib/utils"
-
-const waitlistSubmitExperiment = {
-  experiment_id: "waitlist_submit_cta_v1",
-  experiment_variant: "join_waitlist",
-} as const
 
 type PreviewAnswers = {
   context: string
@@ -20,14 +16,23 @@ type PreviewAnswers = {
 
 interface WaitlistFormProps {
   className?: string
+  formId?: string
   previewAnswers?: PreviewAnswers | null
+  surface?: "preview" | "standalone"
 }
 
-export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
+export function WaitlistForm({
+  className,
+  formId = "waitlist",
+  previewAnswers,
+  surface = "preview",
+}: WaitlistFormProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [isPending, setIsPending] = useState(false)
   const formRef = useRef<HTMLFormElement | null>(null)
+  const { experimentId, variant } = useExperiment(waitlistSubmitExperiment)
+  const submitLabel = variant === "get_early_access" ? "Get early access" : "Join waitlist"
 
   useEffect(() => {
     const formElement = formRef.current
@@ -46,6 +51,8 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
           hasTrackedView = true
           trackClarityEvent("waitlist_form_viewed", {
             has_preview_answers: Boolean(previewAnswers),
+            form_id: formId,
+            form_surface: surface,
           })
           observer.disconnect()
         }
@@ -82,11 +89,15 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
     event.preventDefault()
     trackClarityEvent(
       "waitlist_submit_started",
-      getClarityExperimentProperties(waitlistSubmitExperiment, {
+      {
         has_preview_answers: Boolean(previewAnswers),
-        cta_text: "Join waitlist",
+        form_id: formId,
+        form_surface: surface,
+        cta_text: submitLabel,
         cta_surface: "waitlist_form",
-      }),
+        experiment_id: experimentId,
+        experiment_variant: variant,
+      },
     )
 
     setIsPending(true)
@@ -115,23 +126,31 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
       })
       trackClarityEvent(
         "waitlist_submit_success",
-        getClarityExperimentProperties(waitlistSubmitExperiment, {
+        {
           has_preview_answers: Boolean(previewAnswers),
-          cta_text: "Join waitlist",
+          form_id: formId,
+          form_surface: surface,
+          cta_text: submitLabel,
           cta_surface: "waitlist_form",
-        }),
+          experiment_id: experimentId,
+          experiment_variant: variant,
+        },
       )
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "unknown"
 
       trackClarityEvent(
         "waitlist_submit_failed",
-        getClarityExperimentProperties(waitlistSubmitExperiment, {
+        {
           has_preview_answers: Boolean(previewAnswers),
-          cta_text: "Join waitlist",
+          form_id: formId,
+          form_surface: surface,
+          cta_text: submitLabel,
           cta_surface: "waitlist_form",
+          experiment_id: experimentId,
+          experiment_variant: variant,
           error_type: getWaitlistErrorType(errorMessage),
-        }),
+        },
       )
       toast({
         title: "Could not join waitlist",
@@ -144,9 +163,9 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
   }
 
   return (
-    <form
+      <form
       ref={formRef}
-      id="waitlist"
+      id={formId}
       onSubmit={handleSubmit}
       className={cn(
         "rounded-3xl border border-border/60 bg-card/70 p-4 sm:p-5 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-sm",
@@ -188,7 +207,7 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
           disabled={isPending}
           className="h-11 rounded-full px-6"
         >
-          {isPending ? "Joining..." : "Join waitlist"}
+          {isPending ? "Joining..." : submitLabel}
         </Button>
         <p className="text-xs leading-relaxed text-muted-foreground">
           No spam. 1-2 emails per month. Unsubscribe anytime.

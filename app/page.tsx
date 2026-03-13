@@ -5,6 +5,7 @@ import { FeaturePatterns } from "@/components/landing/feature-patterns"
 import { FeatureSupport } from "@/components/landing/feature-support"
 import { PreviewFlow } from "@/components/landing/preview-flow"
 import { PrivacySection } from "@/components/landing/privacy-section"
+import { WaitlistSection } from "@/components/landing/waitlist-section"
 import { Footer } from "@/components/landing/footer"
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <FeatureSupport />
       <PreviewFlow />
       <PrivacySection />
+      <WaitlistSection />
       <Footer />
     </main>
   )
