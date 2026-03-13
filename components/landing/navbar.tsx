@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { trackClarityEvent } from "@/lib/clarity"
+import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
 import { Infinity } from "lucide-react"
 
 const navLinks = [
@@ -12,9 +12,21 @@ const navLinks = [
   { label: "Privacy", href: "#privacy" },
 ]
 
+const navbarPreviewCtaExperiment = {
+  experiment_id: "navbar_preview_cta_copy_v1",
+  experiment_variant: "try_preview",
+} as const
+
 export function Navbar() {
   function scrollToPreview() {
-    trackClarityEvent("nav_try_preview_clicked", { location: "navbar" })
+    trackClarityEvent(
+      "nav_try_preview_clicked",
+      getClarityExperimentProperties(navbarPreviewCtaExperiment, {
+        cta_text: "Try Preview",
+        cta_surface: "navbar",
+        location: "navbar",
+      }),
+    )
 
     const preview = document.getElementById("preview")
 
@@ -54,6 +66,8 @@ export function Navbar() {
               onClick={() =>
                 trackClarityEvent("nav_link_clicked", {
                   label: link.label,
+                  cta_text: link.label,
+                  cta_surface: "navbar",
                   destination: link.href,
                 })
               }

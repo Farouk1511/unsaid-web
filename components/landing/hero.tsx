@@ -2,9 +2,19 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { trackClarityEvent } from "@/lib/clarity"
+import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
 import { WaveDivider } from "./wave-divider"
 import { PhoneMockup } from "./phone-mockup"
+
+const heroPrimaryCtaExperiment = {
+  experiment_id: "hero_primary_cta_copy_v1",
+  experiment_variant: "try_the_30_sec_preview",
+} as const
+
+const heroSecondaryCtaExperiment = {
+  experiment_id: "hero_secondary_cta_copy_v1",
+  experiment_variant: "see_how_it_works",
+} as const
 
 export function Hero() {
   return (
@@ -33,7 +43,17 @@ export function Hero() {
               <Button asChild size="lg" className="h-11 rounded-full px-6">
                 <Link
                   href="#preview"
-                  onClick={() => trackClarityEvent("hero_cta_clicked", { cta: "try_preview", destination: "preview" })}
+                  onClick={() =>
+                    trackClarityEvent(
+                      "hero_cta_clicked",
+                      getClarityExperimentProperties(heroPrimaryCtaExperiment, {
+                        cta: "try_preview",
+                        cta_text: "Try the 30-sec preview",
+                        cta_surface: "hero",
+                        destination: "preview",
+                      }),
+                    )
+                  }
                 >
                   Try the 30-sec preview
                 </Link>
@@ -47,7 +67,15 @@ export function Hero() {
                 <Link
                   href="#how-it-works"
                   onClick={() =>
-                    trackClarityEvent("hero_cta_clicked", { cta: "see_how_it_works", destination: "how_it_works" })
+                    trackClarityEvent(
+                      "hero_cta_clicked",
+                      getClarityExperimentProperties(heroSecondaryCtaExperiment, {
+                        cta: "see_how_it_works",
+                        cta_text: "See how it works",
+                        cta_surface: "hero",
+                        destination: "how_it_works",
+                      }),
+                    )
                   }
                 >
                   See how it works

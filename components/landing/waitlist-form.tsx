@@ -4,8 +4,13 @@ import { type FormEvent, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
-import { trackClarityEvent } from "@/lib/clarity"
+import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
 import { cn } from "@/lib/utils"
+
+const waitlistSubmitExperiment = {
+  experiment_id: "waitlist_submit_cta_v1",
+  experiment_variant: "join_waitlist",
+} as const
 
 type PreviewAnswers = {
   context: string
@@ -75,9 +80,14 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    trackClarityEvent("waitlist_submit_started", {
-      has_preview_answers: Boolean(previewAnswers),
-    })
+    trackClarityEvent(
+      "waitlist_submit_started",
+      getClarityExperimentProperties(waitlistSubmitExperiment, {
+        has_preview_answers: Boolean(previewAnswers),
+        cta_text: "Join waitlist",
+        cta_surface: "waitlist_form",
+      }),
+    )
 
     setIsPending(true)
 
@@ -103,16 +113,26 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
         title: "You're on the waitlist",
         description: "Your launch offer is saved: 50% off month one and 25% off month two.",
       })
-      trackClarityEvent("waitlist_submit_success", {
-        has_preview_answers: Boolean(previewAnswers),
-      })
+      trackClarityEvent(
+        "waitlist_submit_success",
+        getClarityExperimentProperties(waitlistSubmitExperiment, {
+          has_preview_answers: Boolean(previewAnswers),
+          cta_text: "Join waitlist",
+          cta_surface: "waitlist_form",
+        }),
+      )
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "unknown"
 
-      trackClarityEvent("waitlist_submit_failed", {
-        has_preview_answers: Boolean(previewAnswers),
-        error_type: getWaitlistErrorType(errorMessage),
-      })
+      trackClarityEvent(
+        "waitlist_submit_failed",
+        getClarityExperimentProperties(waitlistSubmitExperiment, {
+          has_preview_answers: Boolean(previewAnswers),
+          cta_text: "Join waitlist",
+          cta_surface: "waitlist_form",
+          error_type: getWaitlistErrorType(errorMessage),
+        }),
+      )
       toast({
         title: "Could not join waitlist",
         description: errorMessage === "unknown" ? "Please try again in a moment." : errorMessage,

@@ -8,6 +8,11 @@ type ClarityValue = string | number | boolean | null | undefined
 
 type ClarityProperties = Record<string, ClarityValue>
 
+export type ClarityExperiment = {
+  experiment_id: string
+  experiment_variant: string
+}
+
 function normalizeClarityValue(value: ClarityValue) {
   if (typeof value === "string") {
     const trimmed = value.trim()
@@ -52,4 +57,11 @@ export function trackClarityEvent(eventName: string, properties?: ClarityPropert
   }
 
   window.clarity?.("event", eventName)
+}
+
+export function getClarityExperimentProperties(experiment: ClarityExperiment, properties?: ClarityProperties) {
+  return {
+    ...experiment,
+    ...properties,
+  }
 }

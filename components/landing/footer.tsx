@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Infinity } from "lucide-react"
-import { trackClarityEvent } from "@/lib/clarity"
+import { getClarityExperimentProperties, trackClarityEvent } from "@/lib/clarity"
 
 const navLinks = [
   { label: "Preview", href: "#preview" },
@@ -15,6 +15,11 @@ const legalLinks = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Use", href: "/terms" },
 ]
+
+const footerInstagramExperiment = {
+  experiment_id: "footer_social_cta_v1",
+  experiment_variant: "instagram_icon_only",
+} as const
 
 export function Footer() {
   return (
@@ -52,6 +57,8 @@ export function Footer() {
                     onClick={() =>
                       trackClarityEvent("footer_nav_link_clicked", {
                         label: link.label,
+                        cta_text: link.label,
+                        cta_surface: "footer",
                         destination: link.href,
                       })
                     }
@@ -76,6 +83,8 @@ export function Footer() {
                         link.href === "/privacy" ? "privacy_clicked" : "terms_clicked",
                         {
                           location: "footer",
+                          cta_text: link.label,
+                          cta_surface: "footer",
                           destination: link.href,
                         },
                       )
@@ -100,10 +109,15 @@ export function Footer() {
                 rel="noreferrer"
                 aria-label="Unsaid on Instagram"
                 onClick={() =>
-                  trackClarityEvent("social_link_clicked", {
-                    network: "instagram",
-                    location: "footer",
-                  })
+                  trackClarityEvent(
+                    "social_link_clicked",
+                    getClarityExperimentProperties(footerInstagramExperiment, {
+                      network: "instagram",
+                      cta_surface: "footer",
+                      cta_text: "Instagram",
+                      location: "footer",
+                    }),
+                  )
                 }
                 className="w-9 h-9 rounded-lg bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
               >
