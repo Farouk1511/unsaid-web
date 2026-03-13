@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { trackClarityEvent } from "@/lib/clarity"
 import { WaveDivider } from "./wave-divider"
 import { PhoneMockup } from "./phone-mockup"
 
@@ -28,7 +31,12 @@ export function Hero() {
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
               <Button asChild size="lg" className="h-11 rounded-full px-6">
-                <Link href="#preview">Try the 30-sec preview</Link>
+                <Link
+                  href="#preview"
+                  onClick={() => trackClarityEvent("hero_cta_clicked", { cta: "try_preview", destination: "preview" })}
+                >
+                  Try the 30-sec preview
+                </Link>
               </Button>
               <Button
                 asChild
@@ -36,7 +44,14 @@ export function Hero() {
                 variant="outline"
                 className="h-11 rounded-full px-6 border-primary/60 text-primary"
               >
-                <Link href="#how-it-works">See how it works</Link>
+                <Link
+                  href="#how-it-works"
+                  onClick={() =>
+                    trackClarityEvent("hero_cta_clicked", { cta: "see_how_it_works", destination: "how_it_works" })
+                  }
+                >
+                  See how it works
+                </Link>
               </Button>
             </div>
 

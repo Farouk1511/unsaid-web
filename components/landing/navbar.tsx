@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { trackClarityEvent } from "@/lib/clarity"
 import { Infinity } from "lucide-react"
 
 const navLinks = [
@@ -13,6 +14,8 @@ const navLinks = [
 
 export function Navbar() {
   function scrollToPreview() {
+    trackClarityEvent("nav_try_preview_clicked", { location: "navbar" })
+
     const preview = document.getElementById("preview")
 
     if (!preview) {
@@ -31,7 +34,11 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl">
       <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5"
+          onClick={() => trackClarityEvent("nav_logo_clicked", { location: "navbar" })}
+        >
           <div className="w-8 h-8 rounded-xl bg-soft-lavender flex items-center justify-center">
             <Infinity className="w-5 h-5 text-primary" />
           </div>
@@ -44,6 +51,12 @@ export function Navbar() {
             <Link
               key={link.label}
               href={link.href}
+              onClick={() =>
+                trackClarityEvent("nav_link_clicked", {
+                  label: link.label,
+                  destination: link.href,
+                })
+              }
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}

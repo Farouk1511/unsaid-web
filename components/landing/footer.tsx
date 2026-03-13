@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Infinity } from "lucide-react"
+import { trackClarityEvent } from "@/lib/clarity"
 
 const navLinks = [
   { label: "Preview", href: "#preview" },
@@ -21,12 +24,18 @@ export function Footer() {
           {/* Logo */}
           <div className="col-span-2 md:col-span-1">
             {/* Logo */}
-            <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-8 h-8 rounded-xl bg-soft-lavender flex items-center justify-center">
-                <Infinity className="w-5 h-5 text-primary" />
+              <div className="flex items-center gap-2.5 mb-6">
+                <div className="w-8 h-8 rounded-xl bg-soft-lavender flex items-center justify-center">
+                  <Infinity className="w-5 h-5 text-primary" />
+                </div>
+                <Link
+                  href="/"
+                  className="font-serif text-lg font-medium text-foreground"
+                  onClick={() => trackClarityEvent("footer_logo_clicked", { location: "footer" })}
+                >
+                  Unsaid
+                </Link>
               </div>
-              <span className="font-serif text-lg font-medium text-foreground">Unsaid</span>
-            </div>
 
             <p className="mb-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Decode hard conversations, choose the next move, and reply with more clarity.
@@ -40,6 +49,12 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    onClick={() =>
+                      trackClarityEvent("footer_nav_link_clicked", {
+                        label: link.label,
+                        destination: link.href,
+                      })
+                    }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
@@ -56,6 +71,15 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    onClick={() =>
+                      trackClarityEvent(
+                        link.href === "/privacy" ? "privacy_clicked" : "terms_clicked",
+                        {
+                          location: "footer",
+                          destination: link.href,
+                        },
+                      )
+                    }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
@@ -75,6 +99,12 @@ export function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Unsaid on Instagram"
+                onClick={() =>
+                  trackClarityEvent("social_link_clicked", {
+                    network: "instagram",
+                    location: "footer",
+                  })
+                }
                 className="w-9 h-9 rounded-lg bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
               >
                 <svg className="w-4 h-4 text-background" viewBox="0 0 24 24" fill="currentColor">

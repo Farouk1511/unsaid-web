@@ -1,9 +1,10 @@
 "use client"
 
-import { type FormEvent, useState } from "react"
+import { type FormEvent, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
+import { trackClarityEvent } from "@/lib/clarity"
 import { cn } from "@/lib/utils"
 
 type PreviewAnswers = {
@@ -21,9 +22,62 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [isPending, setIsPending] = useState(false)
+  const formRef = useRef<HTMLFormElement | null>(null)
+
+  useEffect(() => {
+    const formElement = formRef.current
+
+    if (!formElement) {
+      return
+    }
+
+    let hasTrackedView = false
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+
+        if (entry?.isIntersecting && !hasTrackedView) {
+          hasTrackedView = true
+          trackClarityEvent("waitlist_form_viewed", {
+            has_preview_answers: Boolean(previewAnswers),
+          })
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.4 },
+    )
+
+    observer.observe(formElement)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [previewAnswers])
+
+  function getWaitlistErrorType(message: string) {
+    const normalizedMessage = message.toLowerCase()
+
+    if (normalizedMessage.includes("already on the waitlist")) {
+      return "duplicate"
+    }
+
+    if (normalizedMessage.includes("invalid") || normalizedMessage.includes("email")) {
+      return "validation"
+    }
+
+    if (normalizedMessage.includes("network") || normalizedMessage.includes("fetch")) {
+      return "network"
+    }
+
+    return "unknown"
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    trackClarityEvent("waitlist_submit_started", {
+      has_preview_answers: Boolean(previewAnswers),
+    })
 
     setIsPending(true)
 
@@ -49,10 +103,19 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
         title: "You're on the waitlist",
         description: "Your launch offer is saved: 50% off month one and 25% off month two.",
       })
+      trackClarityEvent("waitlist_submit_success", {
+        has_preview_answers: Boolean(previewAnswers),
+      })
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "unknown"
+
+      trackClarityEvent("waitlist_submit_failed", {
+        has_preview_answers: Boolean(previewAnswers),
+        error_type: getWaitlistErrorType(errorMessage),
+      })
       toast({
         title: "Could not join waitlist",
-        description: error instanceof Error ? error.message : "Please try again in a moment.",
+        description: errorMessage === "unknown" ? "Please try again in a moment." : errorMessage,
         variant: "destructive",
       })
     } finally {
@@ -62,6 +125,7 @@ export function WaitlistForm({ className, previewAnswers }: WaitlistFormProps) {
 
   return (
     <form
+      ref={formRef}
       id="waitlist"
       onSubmit={handleSubmit}
       className={cn(

@@ -1,7 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { trackClarityEvent } from "@/lib/clarity"
 import { WaitlistForm } from "./waitlist-form"
 
 type QuestionId = "context" | "feeling" | "goal"
@@ -87,6 +88,9 @@ function buildPreview(answers: Answers) {
 export function PreviewFlow() {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const hasTrackedPreviewStarted = useRef(false)
+  const hasTrackedPreviewCompleted = useRef(false)
 
   const isComplete = step >= questions.length
   const currentQuestion = questions[Math.min(step, questions.length - 1)]
@@ -98,18 +102,75 @@ export function PreviewFlow() {
       return
     }
 
+    if (!hasTrackedPreviewStarted.current) {
+      hasTrackedPreviewStarted.current = true
+      trackClarityEvent("preview_started")
+    }
+
+    trackClarityEvent("preview_step_completed", {
+      step_id: currentQuestion.id,
+      step_index: step + 1,
+      selected_option: value,
+    })
+
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }))
     setStep((prev) => Math.min(prev + 1, questions.length))
   }
 
   function handleBack() {
+    trackClarityEvent("preview_back_clicked", { step_index: step + 1 })
     setStep((prev) => Math.max(prev - 1, 0))
   }
 
   function restart() {
+    trackClarityEvent("preview_restarted")
+    hasTrackedPreviewCompleted.current = false
     setAnswers({})
     setStep(0)
   }
+
+  useEffect(() => {
+    if (!isComplete || hasTrackedPreviewCompleted.current) {
+      return
+    }
+
+    hasTrackedPreviewCompleted.current = true
+
+    trackClarityEvent("preview_completed", {
+      context: answers.context,
+      feeling: answers.feeling,
+      goal: answers.goal,
+    })
+  }, [answers.context, answers.feeling, answers.goal, isComplete])
+
+  useEffect(() => {
+    const sectionElement = sectionRef.current
+
+    if (!sectionElement) {
+      return
+    }
+
+    let hasTrackedView = false
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+
+        if (entry?.isIntersecting && !hasTrackedView) {
+          hasTrackedView = true
+          trackClarityEvent("preview_viewed")
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.4 },
+    )
+
+    observer.observe(sectionElement)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   const completedAnswers: PreviewAnswers | null = isComplete
     ? {
@@ -120,7 +181,7 @@ export function PreviewFlow() {
     : null
 
   return (
-    <section id="preview" className="px-6 py-24 bg-background-alt/50">
+    <section ref={sectionRef} id="preview" className="px-6 py-24 bg-background-alt/50">
       <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-medium uppercase tracking-[0.22em] text-primary/80">
