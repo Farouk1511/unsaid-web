@@ -1,51 +1,46 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter, Fraunces } from 'next/font/google'
-import Script from 'next/script'
-import { Analytics } from '@vercel/analytics/next'
-import { ConvexClientProvider } from '@/components/convex-client-provider'
-import { Toaster } from '@/components/ui/toaster'
-import './globals.css'
+import type { Metadata, Viewport } from "next"
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google"
+import Script from "next/script"
+import { Analytics } from "@vercel/analytics/next"
+import { ConvexClientProvider } from "@/components/convex-client-provider"
+import { Toaster } from "@/components/ui/toaster"
+import "./globals.css"
 
 const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID
 
-const inter = Inter({ 
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter"
-});
+  variable: "--font-plus-jakarta",
+})
 
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
-  weight: ["400", "500", "600", "700"]
-});
+  weight: ["400", "500", "600", "700"],
+})
 
 export const metadata: Metadata = {
-  title: 'Unsaid - Your Pocket Companion for Emotional Growth',
-  description: 'Unsaid helps you make sense of your emotions, spot unhelpful patterns in conversations, and grow through calm, thoughtful guidance.',
-  generator: 'v0.app',
-  keywords: ['communication', 'relationships', 'emotional clarity', 'conversation help', 'texting support'],
+  title: "unsaid - decode the conversation, not just the words",
+  description:
+    "Paste a conversation or upload a screenshot to get emotionally intelligent clarity on what was said, what was meant, what was felt, and what to do next.",
+  keywords: ["communication", "relationships", "emotional clarity", "conversation help", "texting support"],
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: "/icon-dark-32x32.png",
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: "/icon.svg",
+        type: "image/svg+xml",
       },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#FCFAF6',
-  width: 'device-width',
+  themeColor: "#0F0E13",
+  width: "device-width",
   initialScale: 1,
 }
 
@@ -56,7 +51,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${fraunces.variable} font-sans antialiased bg-background text-foreground`}>
+      <body className={`${plusJakartaSans.variable} ${fraunces.variable} font-sans antialiased bg-[var(--bg-primary)] text-[var(--text-primary)]`}>
         <ConvexClientProvider>
           {children}
           <Toaster />

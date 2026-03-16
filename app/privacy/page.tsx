@@ -4,21 +4,21 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Privacy Policy | Unsaid",
   description:
-    "How Unsaid collects, uses, and protects information for the marketing website and waitlist.",
+    "How Unsaid collects, uses, and protects information for the web conversation analyzer and optional waitlist.",
 }
 
 const sections = [
   {
     title: "What we collect",
-    body: "When you join the waitlist, we collect your name and email address. If you complete the preview prompts, we also store the selected context, feeling, and goal answers. We may also collect basic technical data like browser type and anonymous usage events.",
+    body: "When you use the web analyzer, we process the conversation text or screenshot you submit so we can generate the requested analysis. If you join the optional waitlist, we collect your name and email address. We may also collect basic technical data like browser type and anonymous usage events.",
   },
   {
     title: "How we use it",
-    body: "We use this information to manage the waitlist, send launch updates, improve the site experience, and prevent misuse.",
+    body: "We use this information to generate analysis responses, manage the optional waitlist, improve the site experience, and prevent misuse.",
   },
   {
-    title: "Waitlist emails",
-    body: "We only send occasional product and launch updates. You can unsubscribe any time from the link in our emails.",
+    title: "How conversation inputs are handled",
+    body: "The web MVP is designed to be stateless for analysis results. We do not currently offer user accounts or saved history for submitted conversations in the website experience.",
   },
   {
     title: "Data sharing",
@@ -43,11 +43,11 @@ export default function PrivacyPage() {
         </Link>
 
         <h1 className="mt-6 font-serif text-4xl font-medium text-foreground">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Last updated: March 12, 2026</p>
+        <p className="mt-2 text-sm text-muted-foreground">Last updated: March 16, 2026</p>
 
         <p className="mt-6 text-base leading-relaxed text-muted-foreground">
           Unsaid is committed to handling personal information with care. This policy explains how we
-          collect and use information through our marketing website and waitlist.
+          collect and use information through our web conversation analyzer and optional waitlist.
         </p>
 
         <div className="mt-10 space-y-4">

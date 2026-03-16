@@ -4,51 +4,64 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Unsaid Design System - Soft, feminine, emotionally safe */
 :root {
-  --background: #FCFAF6;
-  --background-alt: #F6F1FF;
-  --foreground: #1F2430;
-  --card: #FFFFFF;
-  --card-foreground: #1F2430;
-  --popover: #FFFFFF;
-  --popover-foreground: #1F2430;
-  --primary: #7B61FF;
-  --primary-foreground: #FFFFFF;
-  --secondary: #B7A8FF;
-  --secondary-foreground: #1F2430;
-  --muted: #F6F1FF;
-  --muted-foreground: #6E6A78;
-  --accent: #EEE8FF;
-  --accent-foreground: #1F2430;
+  --bg-primary: #0f0e13;
+  --bg-secondary: #1a1820;
+  --bg-card: #232129;
+  --text-primary: #f5f0eb;
+  --text-secondary: #a09b94;
+  --accent-primary: #e8b4b8;
+  --accent-secondary: #b8a9c9;
+  --accent-warm: #d4a574;
+  --border: #2a2730;
+  --success: #8bc6a3;
+  --card-said: #1e1c24;
+  --card-meant: #1f1a24;
+  --card-felt: #241a1e;
+  --card-next: #1a2420;
+
+  --background: var(--bg-primary);
+  --background-alt: var(--bg-secondary);
+  --foreground: var(--text-primary);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-secondary);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-primary);
+  --primary-foreground: var(--bg-primary);
+  --secondary: #302a38;
+  --secondary-foreground: var(--text-primary);
+  --muted: #18161d;
+  --muted-foreground: var(--text-secondary);
+  --accent: #2a2430;
+  --accent-foreground: var(--text-primary);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: #FFFFFF;
-  --border: #E9E2F5;
-  --input: #E9E2F5;
-  --ring: #7B61FF;
-  --soft-pink: #F7DCE8;
-  --soft-lavender: #EEE8FF;
-  --soft-yellow: #FFF3D6;
-  --chart-1: #7B61FF;
-  --chart-2: #B7A8FF;
-  --chart-3: #F7DCE8;
-  --chart-4: #EEE8FF;
-  --chart-5: #E9E2F5;
+  --destructive-foreground: #ffffff;
+  --input: var(--border);
+  --ring: rgba(232, 180, 184, 0.45);
+  --soft-pink: var(--accent-primary);
+  --soft-lavender: var(--accent-secondary);
+  --soft-yellow: var(--accent-warm);
+  --chart-1: var(--accent-primary);
+  --chart-2: var(--accent-secondary);
+  --chart-3: var(--accent-warm);
+  --chart-4: #89a6d4;
+  --chart-5: #8bc6a3;
   --radius: 1rem;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1F2430;
-  --sidebar-primary: #7B61FF;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EEE8FF;
-  --sidebar-accent-foreground: #1F2430;
-  --sidebar-border: #E9E2F5;
-  --sidebar-ring: #7B61FF;
+  --sidebar: var(--bg-card);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--accent-primary);
+  --sidebar-primary-foreground: var(--bg-primary);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @theme inline {
-  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-sans: var(--font-plus-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-serif: var(--font-fraunces), 'Fraunces', Georgia, serif;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   --color-background: var(--background);
   --color-background-alt: var(--background-alt);
   --color-foreground: var(--foreground);
@@ -95,7 +108,46 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at top, rgba(232, 180, 184, 0.12), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(184, 169, 201, 0.1), transparent 24%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(232, 180, 184, 0.35);
+    color: var(--text-primary);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.06) translate3d(0, -8px, 0);
   }
 }

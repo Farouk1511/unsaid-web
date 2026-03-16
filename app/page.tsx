@@ -1,24 +1,14 @@
-import { Navbar } from "@/components/landing/navbar"
-import { LandingTracker } from "@/components/analytics/landing-tracker"
-import { Hero } from "@/components/landing/hero"
-import { FeaturePatterns } from "@/components/landing/feature-patterns"
-import { FeatureSupport } from "@/components/landing/feature-support"
-import { PreviewFlow } from "@/components/landing/preview-flow"
-import { PrivacySection } from "@/components/landing/privacy-section"
-import { WaitlistSection } from "@/components/landing/waitlist-section"
-import { Footer } from "@/components/landing/footer"
+import { ConversationInput } from "@/components/ConversationInput"
+import { Footer } from "@/components/Footer"
+import { Hero } from "@/components/Hero"
+import { ProductTracker } from "@/components/analytics/product-tracker"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
-      <LandingTracker />
-      <Navbar />
+    <main className="min-h-screen bg-[var(--bg-primary)]">
+      <ProductTracker />
       <Hero />
-      <FeaturePatterns />
-      <FeatureSupport />
-      <PreviewFlow />
-      <PrivacySection />
-      <WaitlistSection />
+      <ConversationInput />
       <Footer />
     </main>
   )

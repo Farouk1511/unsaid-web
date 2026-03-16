@@ -3,21 +3,21 @@ import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Terms of Use | Unsaid",
-  description: "Terms governing access and use of the Unsaid website and waitlist.",
+  description: "Terms governing access and use of the Unsaid website, analyzer, and optional waitlist.",
 }
 
 const sections = [
   {
     title: "Service overview",
-    body: "Unsaid provides a marketing website and waitlist experience for an upcoming mobile app. Features may change as the product evolves.",
+    body: "Unsaid provides a web-based conversation analysis experience and an optional waitlist for a future mobile app. Features may change as the product evolves.",
   },
   {
     title: "Acceptable use",
     body: "Please use this website lawfully and respectfully. Do not attempt to interfere with site security, performance, or availability.",
   },
   {
-    title: "Waitlist expectations",
-    body: "Joining the waitlist does not guarantee immediate access, availability in all regions, or specific release dates.",
+    title: "AI-generated insight",
+    body: "The analysis provided by Unsaid is AI-generated for reflection and communication support only. It is not therapy, crisis support, legal advice, or medical advice.",
   },
   {
     title: "No guarantees",
@@ -46,11 +46,11 @@ export default function TermsPage() {
         </Link>
 
         <h1 className="mt-6 font-serif text-4xl font-medium text-foreground">Terms of Use</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Last updated: March 12, 2026</p>
+        <p className="mt-2 text-sm text-muted-foreground">Last updated: March 16, 2026</p>
 
         <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-          These terms govern your access to and use of the Unsaid website and waitlist. If you do not
-          agree with these terms, please do not use the site.
+          These terms govern your access to and use of the Unsaid website, analyzer, and optional
+          waitlist. If you do not agree with these terms, please do not use the site.
         </p>
 
         <div className="mt-10 space-y-4">
