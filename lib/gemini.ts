@@ -38,6 +38,9 @@ const responseSchema = {
     rewrite: {
       type: Type.STRING,
     },
+    message_to_send: {
+      type: Type.STRING,
+    },
     emotional_tone: {
       type: Type.STRING,
     },
@@ -49,6 +52,7 @@ const responseSchema = {
     "what_was_felt",
     "healthiest_next_move",
     "rewrite",
+    "message_to_send",
     "emotional_tone",
   ],
   propertyOrdering: [
@@ -59,6 +63,7 @@ const responseSchema = {
     "what_was_felt",
     "healthiest_next_move",
     "rewrite",
+    "message_to_send",
     "emotional_tone",
   ],
 } as const
@@ -80,6 +85,8 @@ function buildInstruction(context: RelationshipContext | undefined, sourceLabel:
     'Use language like "likely", "probably", or "it seems like" instead of certainty.',
     "If the content is not actually a readable conversation, set isConversation to false and provide a short warm errorMessage.",
     "If the conversation suggests abuse, coercion, or danger, gently flag that in healthiest_next_move and suggest trusted support.",
+    "Set rewrite to a short explanation of the communication approach.",
+    "Set message_to_send to only the exact ready-to-send text message, plain text, no labels, no quotation marks.",
     "Keep the tone warm, grounded, slightly informal, and useful.",
   ].join(" ")
 }
@@ -99,6 +106,7 @@ function normalizeAnalysis(payload: GeminiAnalysis): AnalysisResult {
     what_was_felt: payload.what_was_felt.trim(),
     healthiest_next_move: payload.healthiest_next_move.trim(),
     rewrite: payload.rewrite.trim(),
+    message_to_send: payload.message_to_send.trim(),
     emotional_tone: payload.emotional_tone.trim(),
   }
 }

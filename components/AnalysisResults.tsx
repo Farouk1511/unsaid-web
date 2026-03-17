@@ -22,13 +22,13 @@ export function AnalysisResults({ analysis, onReset }: AnalysisResultsProps) {
 
   async function copyRewrite() {
     try {
-      await navigator.clipboard.writeText(analysis.rewrite)
+      await navigator.clipboard.writeText(analysis.message_to_send)
       trackClarityEvent("rewrite_copied", {
         source: "analysis_results",
       })
       toast({
-        title: "Rewrite copied",
-        description: "Now you can tweak it and make it sound like you.",
+        title: "Message copied",
+        description: "Copied just the sendable message.",
       })
     } catch {
       toast({
@@ -71,7 +71,10 @@ export function AnalysisResults({ analysis, onReset }: AnalysisResultsProps) {
       </ResultCard>
 
       <ResultCard title="Rewrite it" eyebrow="if you could say what you actually mean" className="bg-[linear-gradient(180deg,rgba(38,33,45,0.94),rgba(28,25,35,0.94))]" delay={400}>
-        <p>{analysis.rewrite}</p>
+        <p className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-[var(--text-primary)]">
+          {analysis.message_to_send}
+        </p>
+        <p className="mt-4">{analysis.rewrite}</p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Button
             type="button"

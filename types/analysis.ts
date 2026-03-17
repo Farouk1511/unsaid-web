@@ -8,6 +8,7 @@ export type AnalysisResult = {
   what_was_felt: string
   healthiest_next_move: string
   rewrite: string
+  message_to_send: string
   emotional_tone: string
 }
 
